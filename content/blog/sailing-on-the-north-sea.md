@@ -1,7 +1,7 @@
 +++
 title = 'In Search of an Atypical Vacation: Sailing on the North Sea'
 date = 2023-09-30T22:33:52+02:00
-draft = false
+draft = true
 tags = [
     "outdoors"
 ]
