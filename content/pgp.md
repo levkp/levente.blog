@@ -4,9 +4,9 @@ menu: "main"
 weight: 2
 ---
 
-You can download my key: [levente.asc](pubkey.asc). Or, if you have cURL installed, run this for a quick import:
+You can download my key: [levente.asc](levente.asc). Or, if you have cURL installed, run this for a quick import:
 
-`curl http://localhost:1333/levente.asc | gpg --import`
+`curl https://levente.blog/levente.asc | gpg --import`
 
 The fingerprint is:
 

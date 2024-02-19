@@ -14,4 +14,4 @@ You can contact me via
  
  - [LinkedIn](https://www.linkedin.com/in/leventekataipal/) 
   
-If want, you can encrypt your message using my [PGP](http://localhost:1313/pgp) key.
+If want, you can encrypt your message using my [PGP](https://levente.blog/pgp) key.
