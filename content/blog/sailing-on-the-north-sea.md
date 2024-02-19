@@ -34,7 +34,7 @@ We signed up to be on the Roald Amundsen[^6], which is a traditional brig. Its s
 
 {{< rawhtml >}}
 <center>
-    <img src="/images/sailing-on-the-north-sea/me-with-telescope.jpg" width="600">
+    <img src="/images/sailing-on-the-north-sea/me-with-telescope.jpg" width="600" loading="lazy" alt="Me with a telescope">
     <figcaption>Here, I'm observing a cargo ship in the distance.</figcaption>
 </center>
 {{< /rawhtml >}}
@@ -43,14 +43,14 @@ On July 8, we arrived at the port Hartlepool and boarded the vessel. Almost imme
 
 {{< rawhtml >}}
 <center>
-    <img src="/images/sailing-on-the-north-sea/north-sea-sunset.jpg" width="600">
+    <img src="/images/sailing-on-the-north-sea/north-sea-sunset.jpg" width="600" loading="lazy" alt="Sunset on the North Sea">
     <figcaption>Yet another beautiful sunset.</figcaption>
 </center>
 {{< /rawhtml >}}
 
-The next day, we departed, and as far as I remember we were out of reach for any cell network by the end of the day. My generation is terminally online, and a digital detox every now and then can only do us good. For me, this was the perfect opportunity to disconnect. Not having my cellphone within reach greatly reduced the urge to use it when I was bored, a habit I had been trying to get rid of. Though, I really wasn't bored often while on board. 
+The next day, we departed, and as far as I remember we were out of reach for any cell network by the end of the day. My generation is terminally online, and a digital detox every now and then can only do us good. For me, this was the perfect opportunity to disconnect. Not having my cellphone within reach greatly reduced the urge to use it when I was bored, a habit I had been trying to get rid of. Though, I really wasn't bored often while on board. Unfortunately, I didn't keep a journal so I can only recall some of the interesting events.
 
-On July 10, we saw dolphins. They were riding the waves create by the ship, which allows them to swim faster and more effortlessly. It's basically a free ride for them!
+On July 10, we saw some dolphins. They were riding the waves created by the ship, which allows them to swim faster and more effortlessly. It's basically a free ride for these guys.
 
 {{< rawhtml >}}
 <center>
@@ -62,7 +62,7 @@ A big storm hit us on July 13. It looked to me that some waves reached up to 3-4
 
 {{< rawhtml >}}
 <center>
-    <img src="/images/sailing-on-the-north-sea/waves.jpg" width="600">
+    <img src="/images/sailing-on-the-north-sea/waves.jpg" width="600" loading="lazy" alt="Big waves">
 </center>
 {{< /rawhtml >}}
 
