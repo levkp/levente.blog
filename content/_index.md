@@ -12,6 +12,6 @@ I will use this website to host my blog. It is for people who want to get to kno
 You can contact me via
  - [Email](mailto:levente.blog.p9ovf@slmail.me) (this is an alias that forwards to my real address, but I reply from that one) 
  
- - [LinkedIn](https://www.linkedin.com/in/leventekataipal/) 
+ - [LinkedIn](https://www.linkedin.com/in/leventekataipal/) (can be viewed after login)
   
 If want, you can encrypt your message using my [PGP](https://levente.blog/pgp) key.
