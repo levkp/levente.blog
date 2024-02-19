@@ -4,7 +4,7 @@ menu: "main"
 weight: 2
 ---
 
-You can download my key: [levente.asc](levente.asc). Or, if you have cURL installed, run this for a quick import:
+You can download my key: [levente.asc](https://levente.blog/levente.asc). Or, if you have cURL installed, run this for a quick import:
 
 `curl https://levente.blog/levente.asc | gpg --import`
 
