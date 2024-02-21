@@ -1,4 +1,5 @@
 # Basic config
+
 baseURL = "https://levente.blog"
 theme = "hugo-bearcub"
 copyright = "Levente Kátai-Pál (CC BY 4.0)"
