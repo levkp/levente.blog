@@ -4,6 +4,8 @@ menu: "main"
 weight: 1
 ---
 
+Hello! 👋🏻
+
 I am a graduating applied computer science student from Hungary, studying in Antwerp, Belgium. I like reading,
 programming, Linux, and a hike in the great outdoors. 
 
