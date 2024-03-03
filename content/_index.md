@@ -6,8 +6,8 @@ weight: 1
 
 Hello! 👋🏻
 
-I am a graduating applied computer science student from Hungary, living in Belgium. I like reading,
-programming, Linux, and hiking in the great outdoors. 
+I am an applied computer science student from Hungary, living in Belgium. I like reading,
+programming, Linux, and the great outdoors. 
 
 I will use this website to host my blog. It is for people who might want to get to know me, and for 
 me to record whatever's on my mind.

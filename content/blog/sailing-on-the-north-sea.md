@@ -9,11 +9,11 @@ tags = [
 
 About a year ago, my fiancée and I visited Lisbon. It was mesmerizing, especially the narrow alleys of Alfama, as one would anticipate from a historical capital city. I was, however, surprised by the sheer number of other tourists with whom we had to share our experience. When I visit a city, I want to understand its history and try to blend in like a local, at least a little bit. This is not easy when everything is packed with tourists which constantly reminds me that I am just one of the many. Of course, we had no more right to be there than anyone else did, so I do not mean to complain about the crowd; it's simply an observation.
 
-This phenomenon of overwhelmed cities overwhelmed by tourists is nothing new, but the by-product of industrial mass tourism that gradually took over the world since the 1960s[^1]. Elizabeth Becker writes in her book Overbooked that
+This phenomenon of cities being overwhelmed by tourists is nothing new, it is the by-product of industrial mass tourism that gradually took over the world since the 1960s[^1]. Elizabeth Becker writes in her book Overbooked
 
 > Travel is an extraordinary pleasure and was once a privilege. Now it is considered a basic right without limits or a sense of responsibility for how all this travel is affecting the places we love. [^2]
 
-To some extent, travel is still a privilege, but it is more accessible than ever before. I think that it's good that more people can now afford to travel, not to mention all the jobs and prosperity the industry can create. In 2022, Portugal was the 11th most visited country in the world, generating €22.2 billion in tourism receipt[^3]. 
+To some extent, travel is still a privilege, but it is more accessible than ever. I think it's good that more people can now afford to travel, not to mention all the jobs and prosperity the industry can create. In 2022, Portugal was the 11th most visited country in the world, generating €22.2 billion in tourism receipt[^3]. 
 
 However, governing administrations should not act greedily and tourism needs to be regulated as soon as it starts to hurt the interest of the locals. This is clearly the case in Lisbon. An article from the BBC[^4] reports that
 
@@ -29,7 +29,7 @@ That's why I was excited when my fiancée heard about the Tall Ship Races from a
 
 There is no sailing experience required because participants join experienced crews as trainees. Most crews are made up of volunteers, they receive no salary for manning the ships. The fee trainees have to pay goes towards maintenance and supplies. **The sole purpose of the race is to meet new people, enjoy the sea and each other's company while working towards a common goal: to navigate the vessel from A to B.** I think that's amazing.
 
-We signed up to be on the Roald Amundsen[^6], which is a traditional brig. Its sails are rigged to the deck and have to be hoisted and lowered by human power. In the photo below, you can see some of the ropes tied to the so called cleats. When ordered, we had to untie certain ropes, pull or loosen them (in groups or alone, depending on the weight on the other end), and finally tie them all back. This was perhaps our most common task. Another chore was being on the lookout, which meant scouting the distance and reporting any object that appear on the horizon. This was important to avoid a possible collision - which could easily happen, as I was told. And indeed, I was surprised to see how many ships are on the sea at the same time[^7]. 
+We signed up to be on the Roald Amundsen[^6], which is a traditional brig. Its sails are rigged to the deck and have to be hoisted and lowered by human power. In the photo below, you can see some of the ropes tied to the so called cleats. When ordered, we had to untie certain ropes, pull or loosen them (in groups or alone, depending on the weight on the other end), and finally tie them all back. This was perhaps our most common task. Another chore was being on the lookout, which meant scouting the distance and reporting any object that appear on the horizon. This was important to avoid a possible collision - which could easily happen, so I was told. And indeed, I was surprised to see how many ships are on the sea at the same time[^7]. 
 
 {{< rawhtml >}}
 <center>
