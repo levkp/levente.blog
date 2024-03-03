@@ -1,5 +1,11 @@
+@font-face {
+  font-family: "Signika";
+  src: url('/fonts/Signika-Regular.ttf') format('truetype');
+  font-weight: normal;
+}
+
 body {
-  font-family: Helvetica, sans-serif;
+  font-family: Signika, sans-serif;
   margin: auto;
   padding: 20px;
   max-width: 720px;
@@ -24,6 +30,10 @@ b {
 
 a {
   color: #8cc2dd;
+}
+
+a:hover {
+  color: whitesmoke;
 }
 
 .title {
