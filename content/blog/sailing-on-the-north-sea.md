@@ -1,5 +1,5 @@
 +++
-title = 'In Search of an Atypical Vacation: Sailing on the North Sea'
+title = 'In search of an atypical vacation: sailing on the North Sea'
 date = 2024-03-02T21:55:52+02:00
 draft = false
 tags = [
