@@ -1,7 +1,7 @@
 +++
 title = 'Permanently delete files and directories with shred'
 date = 2024-03-03T21:55:52+02:00
-draft = false
+draft = true
 tags = [
     "outdoors"
 ]
