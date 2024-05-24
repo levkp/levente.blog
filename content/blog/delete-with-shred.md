@@ -1,116 +1,133 @@
 +++
-title = 'Permanently delete files and directories with shred'
+title = 'Permanently erase sensitive files with shred'
 date = 2024-03-03T21:55:52+02:00
 draft = false
 tags = [
-    "outdoors"
+    "linux",
+    "bash"
 ]
 +++
 
-If you're a little paranoid, like me, you might've wondered what really happens to the files you deleted. Isn't it suspicious that even if you delete large directories with `rm -r`, the command returns 0 almost immediately?
+If you're a little paranoid, like me, you might've wondered what really happens to 
+the files you remove on a Linux operating system. Isn't it suspicious that when `rm` is invoked, it typically
+returns code 0 in an instant, even when invoked on large files? That is because what really happens is that the file
+is unlinked from the file system, but its data will still exist on the disk until the space is allocated to something else.
+This obviously has two major advantages, performance and recovery. However, when dealing with files with sensitive content, 
+I like to use `shred` for deletion. Not because the CIA is after me, or because I would leave my laptop unattended and unlocked, but simply because it 
+makes me feel better.
 
-When dealing with files with sensitive contents, I typically use `shred` for deletion. This program is part of GNU coreutils and BusyBox as well.
+The description of `shred` in its manpage is
 
-`shred` only works on files.
+> Overwrite  the  specified  FILE(s) repeatedly, in order to make it harder for even
+> very expensive hardware probing to recover the data.
+
+It uses the Gutmann[^1] method to repeatedly erase the contents of the file, and it is part of GNU coreutils[^2] and BusyBox[^3] as well. 
+There's an excellent writing on `shred` on gnu.org[^4]. My favourite part is when the writer casually states
+
+> The best way to remove something irretrievably is to destroy the media it’s on with acid, melt it down, or the like.
+
+As if the average user would have a vat of acid at hand.
+
+Because this article was written by someone much smarter than I, I will not try to go in-depth about the workings of 
+`shred`. Instead, I will attempt to show how to counter (on a BTRFS filesystem, since I use Fedora) a pitfall that the 
+article calls a crucial assumption. I will also write a simple script to use the program on directories.
+
+This crucial assumption is that the file system overwrites data in place. This means that when a file is modified, the
+changes are written directly to the same location of the data. This might be favourable on systems that have high write
+workloads. On the contrary, if the user needs data integrity or recovery, he might choose to use a copy-on-write
+(CoW) file system like BTRFS. When data is modified on a CoW file system, it is first copied to a new location, and the 
+changes are then made to that copy. `shred` does not warn about this pitfall, and it's the user's responsibility to 
+ensure that the files are overwritten as expected.
+
+I found two methods to avoid CoW on files I want to get rid of for good, out of which only the second one will work for
+files
+
+## Changing file attributes with `chattr`
+
+The first is to change the file's attributes using `chattr`. File attributes are metadata that tells the
+operating system how to work with the file. For example, `chattr +i something.txt` makes the file read-only, while `chattr +C something.txt`
+will signal that the file is not subject to CoW. This is the attribute I need - so I thought. As I mentioned, the 
+file system
+of my root partition is BTRFS. Here is what the man page of `chattr` says about my case:
+
+> Note: For btrfs, the 'C' flag should be set on new or empty files.
+> If it is set on a file which already has data blocks, it is undefined when the blocks assigned to the file will
+> be fully stable.
+
+This means when creating an empty file, I should be able to set the `C` attribute.
+
+```
+$ touch something.txt
+$ lsattr something.txt
+---------------------- something.txt
+$ chattr +C something.txt
+---------------C------ something.txt
+```
+
+Works as expected. Now let's see what happens if I try to set `C` on a file which already has some content:
+
+```
+$ echo Hello there! > something2.txt
+$ chattr +C something2.txt
+chattr: Invalid argument while setting flags on something2.txt
+```
+
+Also works as expected, which means I can't use `chattr` on existing files to avoid CoW when shredding. My guess is 
+that this is because BTRFS cannot retroactively remove possible existing shadow copies. But if you know I'm wrong, 
+please let me know.
+
+## Mounting with `-o nodatacow`
+
+Mounting with `-o nodatacow` will disable CoW for all subvolumes.
+
+```
+sudo mkdir /mnt/btrfs-drive && sudo mount -o nodatacow /dev/sda1 /mnt/btrfs-drive/
+```
+
+
+
+## Scripting with `shred`
+
 
 a script that removes all regular files and directories inside the directories
 
 
+However, I quickly learnt that this script will result in `Warning: Program '/bin/bash' crashed.` when invoked on deep directories.
+The cause is probably stack overflow, because of the recursion. A quick look at the systemd journal verified this.
+
+
+`shred` accepts multiple files as arguments, but not directories. 
+
+`shred` works with symbolic links too, 
+
+
+When `find` is invoked on a file with `-type f`
+
 ```bash
-function destroy {
-    for path in "$@"; do
-        if [ -f "$path" ]; then
-            shred -uzv "$path"
-        elif [ -d "$path" ]; then
-            destroy "$path" && rmdir -v "$path"
-        elif [ -h "$path" ]; then
-            unlink "$path"
-        else
-            echo "No such file or directory, or can't be removed: $path"
+#!/bin/bash
+
+for path in "$@"; do
+    if [ -f "$path" ] || [ -d "$path" ]; then
+        if [ -h "$path" ]; then
+            link="$path"
+            path=$(readlink "$link")
+            unlink "$link"
         fi
-    done
-}
+        find "$path" -type f -exec shred -uzvf {} +
+    else
+        echo "Not regular file or directory: $path"
+    fi
+done
 ```
 
-However, I quickly learnt that this script will result in `Warning: Program '/bin/bash' crashed.` when invoked on deep directories. The cause is probably stack overflow, because of the recursion. A quick look at the systemd journal verified this.
-
-{{< rawhtml >}}
-  <details>
-    <summary>
-      Click to see systemd logs
-    </summary>
-    <p style="white-space: pre-line;">
-        Stack trace of thread 33230:
-        #0 0x0000556c9d0e5b10 param_expand.lto_priv.0 (bash + 0x7fb10)
-        #1 0x0000556c9d0e792d expand_word_internal.lto_priv.0 (bash + 0x8192d)
-        #2 0x0000556c9d0e7b90 expand_word_internal.lto_priv.0 (bash + 0x81b90)
-        #3 0x0000556c9d0e9a71 expand_word_list_internal.lto_priv.0 (bash + 0x83a71)
-        #4 0x0000556c9d0bbe14 execute_simple_command.lto_priv.0 (bash + 0x55e14)
-        #5 0x0000556c9d0b0c04 execute_command_internal (bash + 0x4ac04)
-        #6 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #7 0x0000556c9d0b008e execute_command_internal (bash + 0x4a08e)
-        #8 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #9 0x0000556c9d0b0d69 execute_command_internal (bash + 0x4ad69)
-        #10 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #11 0x0000556c9d0b0d69 execute_command_internal (bash + 0x4ad69)
-        #12 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #13 0x0000556c9d0b1d0f execute_command_internal (bash + 0x4bd0f)
-        #14 0x0000556c9d0b01bc execute_command_internal (bash + 0x4a1bc)
-        #15 0x0000556c9d0b7816 execute_function (bash + 0x51816)
-        #16 0x0000556c9d0bd144 execute_simple_command.lto_priv.0 (bash + 0x57144)
-        #17 0x0000556c9d0b0c04 execute_command_internal (bash + 0x4ac04)
-        #18 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #19 0x0000556c9d0b008e execute_command_internal (bash + 0x4a08e)
-        #20 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #21 0x0000556c9d0b0d69 execute_command_internal (bash + 0x4ad69)
-        #22 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #23 0x0000556c9d0b0d69 execute_command_internal (bash + 0x4ad69)
-        #24 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #25 0x0000556c9d0b1d0f execute_command_internal (bash + 0x4bd0f)
-        #26 0x0000556c9d0b01bc execute_command_internal (bash + 0x4a1bc)
-        #27 0x0000556c9d0b7816 execute_function (bash + 0x51816)
-        #28 0x0000556c9d0bd144 execute_simple_command.lto_priv.0 (bash + 0x57144)
-        #29 0x0000556c9d0b0c04 execute_command_internal (bash + 0x4ac04)
-        #30 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #31 0x0000556c9d0b008e execute_command_internal (bash + 0x4a08e)
-        #32 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #33 0x0000556c9d0b0d69 execute_command_internal (bash + 0x4ad69)
-        #34 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #35 0x0000556c9d0b0d69 execute_command_internal (bash + 0x4ad69)
-        #36 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #37 0x0000556c9d0b1d0f execute_command_internal (bash + 0x4bd0f)
-        #38 0x0000556c9d0b01bc execute_command_internal (bash + 0x4a1bc)
-        #39 0x0000556c9d0b7816 execute_function (bash + 0x51816)
-        #40 0x0000556c9d0bd144 execute_simple_command.lto_priv.0 (bash + 0x57144)
-        #41 0x0000556c9d0b0c04 execute_command_internal (bash + 0x4ac04)
-        #42 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #43 0x0000556c9d0b008e execute_command_internal (bash + 0x4a08e)
-        #44 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #45 0x0000556c9d0b0d69 execute_command_internal (bash + 0x4ad69)
-        #46 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #47 0x0000556c9d0b0d69 execute_command_internal (bash + 0x4ad69)
-        #48 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #49 0x0000556c9d0b1d0f execute_command_internal (bash + 0x4bd0f)
-        #50 0x0000556c9d0b01bc execute_command_internal (bash + 0x4a1bc)
-        #51 0x0000556c9d0b7816 execute_function (bash + 0x51816)
-        #52 0x0000556c9d0bd144 execute_simple_command.lto_priv.0 (bash + 0x57144)
-        #53 0x0000556c9d0b0c04 execute_command_internal (bash + 0x4ac04)
-        #54 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #55 0x0000556c9d0b008e execute_command_internal (bash + 0x4a08e)
-        #56 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #57 0x0000556c9d0b0d69 execute_command_internal (bash + 0x4ad69)
-        #58 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #59 0x0000556c9d0b0d69 execute_command_internal (bash + 0x4ad69)
-        #60 0x0000556c9d0b2ece execute_command (bash + 0x4cece)
-        #61 0x0000556c9d0b1d0f execute_command_internal (bash + 0x4bd0f)
-        #62 0x0000556c9d0b01bc execute_command_internal (bash + 0x4a1bc)
-        #63 0x0000556c9d0b7816 execute_function (bash + 0x51816)
-        ELF object binary architecture: AMD x86-64 
-    </p>
-  </details>
-{{< /rawhtml >}}
+Then, you can add this function to your `.bashrc`, or make it a standalone script. I placed it in `.local/bin`.
 
 
 
+[^1]: https://en.wikipedia.org/wiki/Gutmann_method
 
+[^2]: https://git.savannah.gnu.org/cgit/coreutils.git/tree/src/shred.c
 
+[^3]: https://git.busybox.net/busybox/tree/coreutils/shred.c
+
+[^4]: https://www.gnu.org/software/coreutils/manual/html_node/shred-invocation.html

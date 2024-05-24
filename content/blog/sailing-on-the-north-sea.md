@@ -3,7 +3,7 @@ title = 'In search of an atypical vacation: sailing on the North Sea'
 date = 2024-03-02T21:55:52+02:00
 draft = false
 tags = [
-    "outdoors"
+    "outdoors", "personal"
 ]
 +++
 
@@ -13,19 +13,26 @@ This phenomenon of cities being overwhelmed by tourists is nothing new, it is th
 
 > Travel is an extraordinary pleasure and was once a privilege. Now it is considered a basic right without limits or a sense of responsibility for how all this travel is affecting the places we love. [^2]
 
-To some extent, travel is still a privilege, but it is more accessible than ever. I think it's good that more people can now afford to travel, not to mention all the jobs and prosperity the industry can create. In 2022, Portugal was the 11th most visited country in the world, generating €22.2 billion in tourism receipt[^3]. 
+To some extent, travel is still a privilege, but it is more accessible than ever. I think it's good that more people can now afford to travel, not to mention all the jobs and 
+prosperity the industry can create. In 2022, Portugal was the 11th most visited country in the world, generating €22.2 billion in tourism receipt[^3].
 
-However, governing administrations should not act greedily and tourism needs to be regulated as soon as it starts to hurt the interest of the locals. This is clearly the case in Lisbon. An article from the BBC[^4] reports that
+However, governing administrations should not act greedily and tourism needs to be regulated as soon as it starts to hurt the interest of the locals. This is clearly the case in 
+Lisbon. An article from the BBC[^4] reports that
 
-> [...] factors leading to the country's current housing crisis include what he refers to as "touristification" - when the rise in popularity of holiday rentals diverts homes from residential use to tourism.
+> [...] factors leading to the country's current housing crisis include what he refers to as "touristification" - when the rise in popularity of holiday rentals diverts homes from 
+> residential use to tourism.
 
 > Areas like the historical neighbourhood of Alfama, known as the home of the Portuguese musical genre Fado, now have 60% of their houses in short-term rental use.
 
-Even though the rather cheap hostel where we stayed at probably doesn't play a major role in the problem, reading this article and Becker's book makes me feel discouraged to visit the most popular destinations. I want to break out of the tourist bubble.
+Even though the rather cheap hostel where we stayed at probably doesn't play a major role in the problem, reading this article and Becker's book makes me feel discouraged to visit 
+the most popular destinations. I want to break out of the tourist bubble.
 
-That's why I was excited when my fiancée heard about the Tall Ship Races from a friend and asked me to participate together. You probably haven't heard about this event before, so let me paste here the first paragraph from its Wikipedia article[^5]:
+That's why I was excited when my fiancée heard about the Tall Ship Races from a friend and asked me to participate together. You probably haven't heard about this event before, so 
+let me paste here the first paragraph from its Wikipedia article[^5]:
 
-> The Tall Ships Races are races for sail training "tall ships". The races are designed to encourage international friendship and training for young people in the art of sailing. The races are held annually in European waters and consists of two racing legs of several hundred nautical miles, and a "cruise in company" between the legs. Over one half of the crew of each ship participating in the races must consist of young people.
+> The Tall Ships Races are races for sail training "tall ships". The races are designed to encourage international friendship and training for young people in the art of sailing. 
+> The races are held annually in European waters and consists of two racing legs of several hundred nautical miles, and a "cruise in company" between the legs. Over one half of the 
+> crew of each ship participating in the races must consist of young people.
 
 There is no sailing experience required because participants join experienced crews as trainees. Most crews are made up of volunteers, they receive no salary for manning the ships. The fee trainees have to pay goes towards maintenance and supplies. **The sole purpose of the race is to meet new people, enjoy the sea and each other's company while working towards a common goal: to navigate the vessel from A to B.** I think that's amazing.
 
