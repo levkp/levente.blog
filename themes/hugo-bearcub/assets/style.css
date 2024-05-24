@@ -30,6 +30,10 @@ a:hover {
   color: whitesmoke;
 }
 
+a:visited:hover {
+  color: whitesmoke;
+}
+
 .title {
   text-decoration: none;
   border: 0;

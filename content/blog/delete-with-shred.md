@@ -1,6 +1,6 @@
 +++
 title = 'Permanently erase sensitive files with shred'
-date = 2024-03-03T21:55:52+02:00
+date = 2024-05-23T08:00:00+00:00
 draft = false
 tags = [
     "linux",
@@ -29,105 +29,116 @@ There's an excellent writing on `shred` on gnu.org[^4]. My favourite part is whe
 As if the average user would have a vat of acid at hand.
 
 Because this article was written by someone much smarter than I, I will not try to go in-depth about the workings of 
-`shred`. Instead, I will attempt to show how to counter (on a BTRFS filesystem, since I use Fedora) a pitfall that the 
-article calls a crucial assumption. I will also write a simple script to use the program on directories.
+`shred`. Instead, I will only attempt to show a simple script to use the program on directories.
 
-This crucial assumption is that the file system overwrites data in place. This means that when a file is modified, the
-changes are written directly to the same location of the data. This might be favourable on systems that have high write
-workloads. On the contrary, if the user needs data integrity or recovery, he might choose to use a copy-on-write
-(CoW) file system like BTRFS. When data is modified on a CoW file system, it is first copied to a new location, and the 
-changes are then made to that copy. `shred` does not warn about this pitfall, and it's the user's responsibility to 
-ensure that the files are overwritten as expected.
+{{< rawhtml >}}
+<fieldset>
+<legend><b>Warning</b></legend>
 
-I found two methods to avoid CoW on files I want to get rid of for good, out of which only the second one will work for
-files
+As the article on gnu.org mentions, <code>shred</code> is not a silver bullet on file systems that do not overwrite 
+data in place. For example, BTRFS uses copy-on-write (CoW), which means that instead of directly writing to the exact 
+location of the data,
+it is first copied to a new location, and the changes are then made to that copy. If you use a file system with
+CoW mechanism, change the file's attributes with <code>chattr +C file</code> before shredding it. Alternatively, 
+if you are using BTRFS, you can mount the file system with <code>-o nodatacow</code> to disable CoW for all subvolumes.
+Also, make sure you don't have any snapshots containing the file you want to get rid of.
+</fieldset>
+{{< /rawhtml >}}
 
-## Changing file attributes with `chattr`
-
-The first is to change the file's attributes using `chattr`. File attributes are metadata that tells the
-operating system how to work with the file. For example, `chattr +i something.txt` makes the file read-only, while `chattr +C something.txt`
-will signal that the file is not subject to CoW. This is the attribute I need - so I thought. As I mentioned, the 
-file system
-of my root partition is BTRFS. Here is what the man page of `chattr` says about my case:
-
-> Note: For btrfs, the 'C' flag should be set on new or empty files.
-> If it is set on a file which already has data blocks, it is undefined when the blocks assigned to the file will
-> be fully stable.
-
-This means when creating an empty file, I should be able to set the `C` attribute.
+A simple, practical use of `shred` would be
 
 ```
-$ touch something.txt
-$ lsattr something.txt
----------------------- something.txt
-$ chattr +C something.txt
----------------C------ something.txt
+$ echo Destroy me! > something.txt
+$ shred -uzfv -n 5 something.txt 
 ```
 
-Works as expected. Now let's see what happens if I try to set `C` on a file which already has some content:
+{{< rawhtml >}}
+<details>
+<summary>Click to toggle output</summary>
+<code style="white-space: pre-wrap">
+shred: something.txt: pass 1/6 (random)...
+shred: something.txt: pass 2/6 (000000)...
+shred: something.txt: pass 3/6 (random)...
+shred: something.txt: pass 4/6 (ffffff)...
+shred: something.txt: pass 5/6 (random)...
+shred: something.txt: pass 6/6 (000000)...
+shred: something.txt: removing
+shred: something.txt: renamed to 0000000000000
+shred: 0000000000000: renamed to 000000000000
+shred: 000000000000: renamed to 00000000000
+shred: 00000000000: renamed to 0000000000
+shred: 0000000000: renamed to 000000000
+shred: 000000000: renamed to 00000000
+shred: 00000000: renamed to 0000000
+shred: 0000000: renamed to 000000
+shred: 000000: renamed to 00000
+shred: 00000: renamed to 0000
+shred: 0000: renamed to 000
+shred: 000: renamed to 00
+shred: 00: renamed to 0
+shred: something.txt: removed
+</code>
+</details>
+{{< /rawhtml >}}
+
+- `-u` removes the file after overwriting
+- `-z` adds a final overwrite with zeroes to hide shredding
+- `-f` tries to change permissions to allow writing if necessary
+- `-v` is verbose mode for more outputs
+
+The default number of overwrites is 3, plus 1 if we add zeroes with `-z` to hide shredding.
+I run Fedora, which uses BTRFS, but I do not have any snapshots:
 
 ```
-$ echo Hello there! > something2.txt
-$ chattr +C something2.txt
-chattr: Invalid argument while setting flags on something2.txt
+$ sudo btrfs subvolume list /
+ID 256 gen 81984 top level 5 path home
+ID 257 gen 81984 top level 5 path root
+ID 258 gen 81265 top level 257 path var/lib/machines
 ```
 
-Also works as expected, which means I can't use `chattr` on existing files to avoid CoW when shredding. My guess is 
-that this is because BTRFS cannot retroactively remove possible existing shadow copies. But if you know I'm wrong, 
-please let me know.
+so I am reassured that the file is gone for good.
 
-## Mounting with `-o nodatacow`
-
-Mounting with `-o nodatacow` will disable CoW for all subvolumes.
-
-```
-sudo mkdir /mnt/btrfs-drive && sudo mount -o nodatacow /dev/sda1 /mnt/btrfs-drive/
-```
-
-
-
-## Scripting with `shred`
-
-
-a script that removes all regular files and directories inside the directories
-
-
-However, I quickly learnt that this script will result in `Warning: Program '/bin/bash' crashed.` when invoked on deep directories.
-The cause is probably stack overflow, because of the recursion. A quick look at the systemd journal verified this.
-
-
-`shred` accepts multiple files as arguments, but not directories. 
-
-`shred` works with symbolic links too, 
-
-
-When `find` is invoked on a file with `-type f`
+It would be convenient to have the ability to run shred on directories. I could write a recursive function that would
+run `shred` on files, but call itself on directories. As much as I like recursion, I know this approach would result in
+a stack overflow on deep directories. Instead, I will utilise `find`'s `-exec` option.
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
 
-for path in "$@"; do
+for path in "$@"; do # Let's accept multiple files/directories
     if [ -f "$path" ] || [ -d "$path" ]; then
+        # If the path is a symlink, unlink it and shred the target as well
         if [ -h "$path" ]; then
             link="$path"
             path=$(readlink "$link")
             unlink "$link"
         fi
+        # When invoked on the file itself, find will return the path anyway
         find "$path" -type f -exec shred -uzvf {} +
     else
+        # Shredding devices is out of scope for this little script
         echo "Not regular file or directory: $path"
     fi
 done
 ```
 
-Then, you can add this function to your `.bashrc`, or make it a standalone script. I placed it in `.local/bin`.
+Now, I could make this a function in my `.bashrc`, or save it as a standalone script. I chose the latter, and placed
+it in `.local/bin`.
 
+## To-do
 
+---
+- [ ] elaborate on the pitfalls of CoW/journaling when using `shred`
+- [ ] elaborate on Gutman method
+- [ ] extend script to check for file system type
+- [ ] extend script to shred devices
 
-[^1]: https://en.wikipedia.org/wiki/Gutmann_method
+## References
 
-[^2]: https://git.savannah.gnu.org/cgit/coreutils.git/tree/src/shred.c
+[^1]: [Gutman method - wikipedia.org](https://en.wikipedia.org/wiki/Gutmann_method)
 
-[^3]: https://git.busybox.net/busybox/tree/coreutils/shred.c
+[^2]: [shred.c - git.savannah.gnu.org](https://git.savannah.gnu.org/cgit/coreutils.git/tree/src/shred.c)
 
-[^4]: https://www.gnu.org/software/coreutils/manual/html_node/shred-invocation.html
+[^3]: [shred.c - git.busybox.net](https://git.busybox.net/busybox/tree/coreutils/shred.c)
+
+[^4]: [shred invocation - gnu.org](https://www.gnu.org/software/coreutils/manual/html_node/shred-invocation.html)
