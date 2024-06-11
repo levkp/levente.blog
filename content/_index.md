@@ -17,16 +17,12 @@ I will use this website to host my blog. It is for people who might want to get 
 me to record whatever is on my mind.
 
 You can contact me via
- - [Email](mailto:levente.blog.p9ovf@slmail.me) (this is an alias that forwards to my real address, but I reply from that one) 
- 
- - [LinkedIn](https://www.linkedin.com/in/leventekataipal/) (can be viewed after login)
+ - [Email](mailto:levente.blog.p9ovf@slmail.me) (this is an alias that forwards to my real address, but I reply from that one)
+ - [LinkedIn](https://www.linkedin.com/in/leventekataipal/) (my profile can be viewed after login)
 
 If you want, you can encrypt your message using my [PGP](https://levente.blog/pgp) key.
 
-My other links are (though my profiles are rather empty at the moment)
+My other links are (though my profiles are rather empty at the moment):
 
 - [GitHub](https://github.com/levkp)
 - [GitLab](https://gitlab.com/lev.kp)
-- [Mastodon](https://mastodon.social/@levi_kp)
-  
-
