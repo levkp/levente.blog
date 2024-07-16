@@ -9,15 +9,15 @@ tags = [
 
 I come from a young family. My mother was only 19 years old when I was born, and as a result, I was lucky to have known
 not only all of my grandparents, but also no less than five of my great-grandparents. Three of them I remember very well, especially the father of my maternal grandmother.
-We called him _Nagyapó_, which translates to _big old man_ literally, but has a kinder, more affectionate tone to it in Hungarian[^1].
+We called him _Nagyapó_, which translates to _big old man_ literally but has a kinder, more affectionate tone to it in Hungarian[^1].
 
-He was born in 1925 in the city of Békéscsaba, but later moved to Budapest where he met my great-grandmother. He was 
+He was born in 1925 in the city of Békéscsaba, but later moved to Budapest, where he met my great-grandmother. He was
 exempted from compulsory military service due to contracting polio. He and his family lived close to the core locations
 of the Hungarian Revolution in 1956, and he personally witnessed the fall of the Stalin statue before the fights broke out.
-They had 3 children, my grandma and her two brothers whom I don't know too well. After the death of his wife in 2005, he moved in with my grandparents.
+They had 3 children, my grandma and her two brothers, whom I don't know too well. After the death of his wife in 2005, he moved in with my grandparents.
 I often visited them after school. We played cards and chess, and he taught me how to play rummy, which remains my favourite card game.
 
-My grandparents are both tech-savvy, well, at least by the standards of their generation. They bought Nagyapó a laptop
+My grandparents are both tech-savvy, at least by the standards of their generation. They bought Nagyapó a laptop
 and taught him how to write emails. Recently, I have been digging through my inbox and came across his messages again. The earliest one I found, sent on June 19 of 2010, goes like this (original on the left):
 
 {{< rawhtml >}}
